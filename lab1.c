@@ -9,22 +9,27 @@ int main() {
   size_t len = 0;
   size_t temp;
 
-  printf("Enter a line: ");
+  printf("Please enter some text: ");
   temp = getline(&b, &len, stdin);
 
-  if (temp != -1) {
+  while (temp != -1) {
     printf("Tokens:\n");
-  } else {
+
+    char *saveptr = NULL;
+    char *ret = strtok_r(b, " ", &saveptr);
+    printf("%s\n", ret);
+    while ((ret = strtok_r(NULL, " ", &saveptr))) {
+      printf("%s\n", ret);
+    }
+
+    printf("PLease enter some text: ");
+    temp = getline(&b, &len, stdin);
+  }
+
+  if (temp == -1) {
     perror("getline failed");
     free(b);
     exit(EXIT_FAILURE);
-  }
-
-  char *saveptr = NULL;
-  char *ret = strtok_r(b, " ", &saveptr);
-  printf("%s\n", ret);
-  while ((ret = strtok_r(NULL, " ", &saveptr))) {
-    printf("%s\n", ret);
   }
 
   free(b);
